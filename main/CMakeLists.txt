@@ -1,0 +1,1 @@
+idf_component_register(SRCS "dht11_esp_driver.c" INCLUDE_DIRS "." REQUIRES dht_driver driver)

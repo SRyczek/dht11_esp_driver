@@ -1,0 +1,13 @@
+# Target labels
+ bootloader
+# Source files and their labels
+/home/seb/Desktop/projects/dht11_esp_driver/build/CMakeFiles/bootloader
+/home/seb/Desktop/projects/dht11_esp_driver/build/CMakeFiles/bootloader.rule
+/home/seb/Desktop/projects/dht11_esp_driver/build/CMakeFiles/bootloader-complete.rule
+/home/seb/Desktop/projects/dht11_esp_driver/build/bootloader-prefix/src/bootloader-stamp/bootloader-build.rule
+/home/seb/Desktop/projects/dht11_esp_driver/build/bootloader-prefix/src/bootloader-stamp/bootloader-configure.rule
+/home/seb/Desktop/projects/dht11_esp_driver/build/bootloader-prefix/src/bootloader-stamp/bootloader-download.rule
+/home/seb/Desktop/projects/dht11_esp_driver/build/bootloader-prefix/src/bootloader-stamp/bootloader-install.rule
+/home/seb/Desktop/projects/dht11_esp_driver/build/bootloader-prefix/src/bootloader-stamp/bootloader-mkdir.rule
+/home/seb/Desktop/projects/dht11_esp_driver/build/bootloader-prefix/src/bootloader-stamp/bootloader-patch.rule
+/home/seb/Desktop/projects/dht11_esp_driver/build/bootloader-prefix/src/bootloader-stamp/bootloader-update.rule
