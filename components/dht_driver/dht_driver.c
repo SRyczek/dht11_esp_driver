@@ -4,8 +4,10 @@
 static gpio_num_t dht_gpio;
 static uint8_t data[5];
 static float humidity, temperature;
+static uint16_t clock_ticks;
+static uint8_t checksum;
 
-int dht_init(gpio_num_t gpio_num)
+uint8_t dht_init(gpio_num_t gpio_num)
 {
     if (GPIO_IS_VALID_GPIO(gpio_num)) {
         dht_gpio = gpio_num;
@@ -15,18 +17,19 @@ int dht_init(gpio_num_t gpio_num)
     return INIT_ERROR;
 }
 
-static void send_signal()
+
+static void send_start_signal()
 {
     memset(data, 0, sizeof(data));
     gpio_set_direction(dht_gpio, GPIO_MODE_OUTPUT);
     gpio_set_level(dht_gpio, 0);
     esp_rom_delay_us(20 * 1000);
     gpio_set_level(dht_gpio, 1);
-    esp_rom_delay_us(40);
+    esp_rom_delay_us(30);
     gpio_set_direction(dht_gpio, GPIO_MODE_INPUT);
 }
 
-static int verify_incoming_signal(uint16_t microseconds, int level)
+static uint8_t verify_incoming_signal(uint16_t microseconds, int level)
 {
     uint16_t ticks = 0;
     while (gpio_get_level(dht_gpio) == level) {
@@ -35,18 +38,9 @@ static int verify_incoming_signal(uint16_t microseconds, int level)
             return TIMEOUT_ERROR;
         esp_rom_delay_us(1);
     }
-    return ticks;
-}
-
-static int verify_response()
-{
-    if (verify_incoming_signal(83, 0) == TIMEOUT_ERROR) {
-        return TIMEOUT_ERROR;
-    }
-    if (verify_incoming_signal(87, 1) == TIMEOUT_ERROR) {
-        return TIMEOUT_ERROR;
-    }
+    clock_ticks = ticks;
     return OK;
+
 }
 
 static void set_bit_at_position(int position)
@@ -94,28 +88,33 @@ static void convert_data(void)
     }
     temperature = parse_data(data[2], data[3]);
     humidity = parse_data(data[0], data[1]);
+    checksum = data[4];
 }
 
-int read_dht(void)
+uint8_t read_dht(void)
 {
-    send_signal();
-    if (verify_response() == TIMEOUT_ERROR)
+    send_start_signal();
+    /* verify response part 1 */
+    if (verify_incoming_signal(83, 0) == TIMEOUT_ERROR) 
         return TIMEOUT_ERROR;
-
+    /* verify response part 2 */
+    if (verify_incoming_signal(87, 1) == TIMEOUT_ERROR) 
+        return TIMEOUT_ERROR;
+    
     for (int bit_num = 0; bit_num < 40; bit_num++) {
         if (verify_incoming_signal(50, 0) == TIMEOUT_ERROR)
             return TIMEOUT_ERROR;
 
-        int res = verify_incoming_signal(70, 1);
-
-        if (res == TIMEOUT_ERROR)
+        if (verify_incoming_signal(70, 1) == TIMEOUT_ERROR || clock_ticks == TIMEOUT_ERROR)
             return TIMEOUT_ERROR;
 
-        if (res > 40)
+        if (clock_ticks > 40)
             set_bit_at_position(bit_num);
 
     }
     convert_data();
+    if (checksum != (data[0] + data[1] + data[2] + data[3]))
+        return CHECKSUM_ERROR;
     return OK;
 }
 
@@ -128,3 +127,4 @@ float get_humidity(void)
 {
     return humidity;
 }
+

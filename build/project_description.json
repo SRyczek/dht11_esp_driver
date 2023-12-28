@@ -1,7 +1,7 @@
 {
     "version":            "1",
     "project_name":       "dht11_esp_driver",
-    "project_version":    "1",
+    "project_version":    "2b027d4-dirty",
     "project_path":       "/home/seb/Desktop/projects/dht11_esp_driver",
     "idf_path":           "/home/seb/esp/esp-idf",
     "build_dir":          "/home/seb/Desktop/projects/dht11_esp_driver/build",
