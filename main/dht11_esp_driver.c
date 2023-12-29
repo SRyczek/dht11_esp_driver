@@ -16,10 +16,8 @@ int app_main(void)
         
         if(status == TIMEOUT_ERROR) {
             printf("Timeout ERROR\n");
-            return 1;
         } else if (status == CHECKSUM_ERROR) {
             printf("Checksum ERROR\n");
-            return 1;
         }
         
         printf("Temp: %0.1f\n", get_temperature());

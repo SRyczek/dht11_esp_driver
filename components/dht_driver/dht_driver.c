@@ -7,16 +7,7 @@ static float humidity, temperature;
 static uint16_t clock_ticks;
 static uint8_t checksum;
 
-uint8_t dht_init(gpio_num_t gpio_num)
-{
-    if (GPIO_IS_VALID_GPIO(gpio_num)) {
-        dht_gpio = gpio_num;
-        return OK;
-    }
-    printf("Init ERROR\n");
-    return INIT_ERROR;
-}
-
+/* static internal functions ********************************************************* */
 
 static void send_start_signal()
 {
@@ -45,23 +36,23 @@ static uint8_t verify_incoming_signal(uint16_t microseconds, int level)
 
 static void set_bit_at_position(int position)
 {
-    if (position >= 0 && position <= 7) {
+    if (position <= 7) {
         data[0] |= (1 << position);
     }
-    else if (position >= 8 && position <= 15) {
-        position = position % 8;
+    else if (position <= 15) {
+        position &= 7;
         data[1] |= (1 << position);
     }
-    else if (position >= 16 && position <= 23) {
-        position = position % 8;
+    else if (position <= 23) {
+        position &= 7;
         data[2] |= (1 << position);
     }
-    else if (position >= 24 && position <= 31) {
-        position = position % 8;
+    else if (position <= 31) {
+        position &= 7;
         data[3] |= (1 << position);
     }
-    else if (position >= 32 && position <= 39) {
-        position = position % 8;
+    else if (position <= 39) {
+        position &= 7;
         data[4] |= (1 << position);
     }
     else {
@@ -90,6 +81,22 @@ static void convert_data(void)
     humidity = parse_data(data[0], data[1]);
     checksum = data[4];
 }
+
+/* *********************************************************************************** */
+/* *********************************************************************************** */
+
+/* public function ******************************************************************* */
+
+uint8_t dht_init(gpio_num_t gpio_num)
+{
+    if (GPIO_IS_VALID_GPIO(gpio_num)) {
+        dht_gpio = gpio_num;
+        return OK;
+    }
+    printf("Init ERROR\n");
+    return INIT_ERROR;
+}
+
 
 uint8_t read_dht(void)
 {
@@ -128,3 +135,4 @@ float get_humidity(void)
     return humidity;
 }
 
+/* *********************************************************************************** */

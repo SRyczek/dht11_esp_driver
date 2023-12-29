@@ -1,0 +1,17 @@
+[1/11] Building C object esp-idf/dht_driver/CMakeFiles/__idf_dht_driver.dir/dht_driver.c.obj
+[2/11] Performing build step for 'bootloader'
+[1/1] cd /home/seb/Desktop/projects/dht11_esp_driver/build/bootloader/esp-idf/esptool_py && /home/seb/.espressif/python_env/idf5.2_py3.10_env/bin/python /home/seb/esp/esp-idf/components/partition_table/check_sizes.py --offset 0x8000 bootloader 0x1000 /home/seb/Desktop/projects/dht11_esp_driver/build/bootloader/bootloader.bin
+Bootloader binary size 0x6910 bytes. 0x6f0 bytes (6%) free.
+[3/9] Building C object esp-idf/main/CMakeFiles/__idf_main.dir/dht11_esp_driver.c.obj
+[4/9] Linking C static library esp-idf/dht_driver/libdht_driver.a
+[5/9] Linking C static library esp-idf/main/libmain.a
+[6/9] Generating ld/sections.ld
+[7/9] Linking CXX executable dht11_esp_driver.elf
+[8/9] Generating binary image from built executable
+esptool.py v4.7.dev1
+Creating esp32 image...
+Merged 2 ELF sections
+Successfully created esp32 image.
+Generated /home/seb/Desktop/projects/dht11_esp_driver/build/dht11_esp_driver.bin
+[9/9] cd /home/seb/Desktop/projects/dht11_esp_driver/build/esp-idf/esptool_py && /home/seb/.espressif/python_env/idf5.2_py3.10_env/bin/python /home/seb/esp/esp-idf/components/partition_table/check_sizes.py --offset 0x8000 partition --type app /home/seb/Desktop/projects/dht11_esp_driver/build/partition_table/partition-table.bin /home/seb/Desktop/projects/dht11_esp_driver/build/dht11_esp_driver.bin
+dht11_esp_driver.bin binary size 0x2c110 bytes. Smallest app partition is 0x100000 bytes. 0xd3ef0 bytes (83%) free.
